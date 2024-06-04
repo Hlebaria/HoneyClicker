@@ -34,7 +34,7 @@ public abstract class Item {
     }
 
     protected void createWorker(){
-        new Thread(new Worker(honeyPerTick, timeInterval, dayShift, nightShift));
+        new Thread(new Worker(honeyPerTick, (long) timeInterval, dayShift, nightShift));
     }
 
     public java.lang.String getDescription() {

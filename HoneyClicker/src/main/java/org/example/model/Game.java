@@ -178,7 +178,8 @@ public class Game {
                     Game.increaseHoney(1);
                     break;
                 case "Bee":
-                    //create a Bee instance
+                    //Item bee = new Bee();
+                    //bee.buyItem(5);
                     break;
                 case "Hive":
                     //create a beeHive instance
