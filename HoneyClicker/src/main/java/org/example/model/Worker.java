@@ -1,21 +1,34 @@
 package org.example.model;
 
-import java.time.Duration;
-
 public class Worker implements Runnable {
 
-    private float honeyPerTick;
-    private float timeInterval;
-    private boolean dayShift;
-    private boolean nightShift;
+    private final float honeyPerTick;
+    private final long timeInterval;
+    private final boolean dayShift;
+    private final boolean nightShift;
 
-
-    public Worker(float honeyPerTick, float timeInterval, boolean dayShift, boolean nightShift){
-        //initiate
+    public Worker(float honeyPerTick, long timeInterval, boolean dayShift, boolean nightShift){
+        this.honeyPerTick = honeyPerTick;
+        this.timeInterval = timeInterval;
+        this.dayShift = dayShift;
+        this.nightShift = nightShift;
     }
 
     @Override
     public void run() {
-        //thread behaiviour
+        while(true){
+            try {
+                Thread.sleep(timeInterval);
+                if((GlobalClock.daytime() && dayShift) || (!GlobalClock.daytime() && nightShift)){
+                    generateHoney();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void generateHoney(){
+        Game.increaseHoney(honeyPerTick);
     }
 }
