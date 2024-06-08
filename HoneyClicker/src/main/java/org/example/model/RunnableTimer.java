@@ -10,7 +10,17 @@ public class RunnableTimer implements Runnable{
 
     @Override
     public void run() {
+        while(true) {
 
+            try {
+                Thread.sleep(1000); // Спи за 1 секунда
+                synchronized (clock) {
+                    clock.addHour();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
