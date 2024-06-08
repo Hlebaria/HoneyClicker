@@ -35,7 +35,7 @@ public class Game {
 
     private static GlobalClock clock;
 
-    private int honeyPerClick = 1;
+    private static int honeyPerClick ;
 
     private Game(){
 
@@ -51,6 +51,7 @@ public class Game {
         factories = new Factory();
         banks = new Bank();
 
+        honeyPerClick = 1;
         honeyCount = 0;
         generateUI();
 
@@ -152,7 +153,7 @@ public class Game {
         description.setWrapStyleWord(true);
         description.setEditable(false);
         description.setBorder(BorderFactory.createLineBorder(Color.black,4));
-        description.setText("Click the flower to gain honey!");
+        description.setText("Click the flower to gain honey!\nBuy workers to help you gain even more honey!\nIf you reach max capacity of a worker type, your honey per click quintuples!\n\nHoney Per Click: " + honeyPerClick);
         window.add(description);
 
         JPanel clockPanel = new JPanel();
@@ -195,6 +196,10 @@ public class Game {
         else{
             window.getContentPane().setBackground(Color.DARK_GRAY);
         }
+    }
+
+    public static void maxCapacityBonus(){
+        honeyPerClick *= 5;
     }
 
     private class ClickHandler implements ActionListener {
@@ -273,7 +278,7 @@ public class Game {
         @Override
         public void mouseExited(MouseEvent e) {
 
-            description.setText("Click the flower to gain honey!");
+            description.setText("Click the flower to gain honey!\nBuy workers to help you gain even more honey!\nIf you reach max capacity of a worker type, your honey per click quintuples!\n\nHoney Per Click: " + honeyPerClick);
 
         }
 

@@ -30,6 +30,10 @@ public abstract class Item {
         //round the price
         price = price - (price % 1);
 
+        if(count == capacity){
+            Game.maxCapacityBonus();
+        }
+
         createWorker();
 
     }
