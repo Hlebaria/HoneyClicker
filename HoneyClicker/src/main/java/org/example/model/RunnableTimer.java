@@ -1,21 +1,26 @@
 package org.example.model;
 
-public class RunnableTimer implements Runnable{
+public class Worker implements Runnable {
 
-    GlobalClock clock;
+    private final float honeyPerTick;
+    private final long timeInterval;
+    private final boolean dayShift;
+    private final boolean nightShift;
 
-    public RunnableTimer(GlobalClock clock){
-        this.clock = clock;
+    public Worker(float honeyPerTick, long timeInterval, boolean dayShift, boolean nightShift){
+        this.honeyPerTick = honeyPerTick;
+        this.timeInterval = timeInterval;
+        this.dayShift = dayShift;
+        this.nightShift = nightShift;
     }
 
     @Override
     public void run() {
-        while(true) {
-
+        while(true){
             try {
-                Thread.sleep(1000); // Спи за 1 секунда
-                synchronized (clock) {
-                    clock.addHour();
+                Thread.sleep(timeInterval);
+                if((GlobalClock.daytime() && dayShift) || (!GlobalClock.daytime() && nightShift)){
+                    generateHoney();
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -23,4 +28,7 @@ public class RunnableTimer implements Runnable{
         }
     }
 
+    private void generateHoney(){
+        Game.increaseHoney(honeyPerTick);
+    }
 }
