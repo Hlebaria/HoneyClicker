@@ -24,6 +24,7 @@ public abstract class Item {
         }
 
         count++;
+        Game.increaseHoney(-price);
         price = price + price/5;
 
         //round the price
@@ -34,7 +35,7 @@ public abstract class Item {
     }
 
     protected void createWorker(){
-        new Thread(new Worker(honeyPerTick, timeInterval, dayShift, nightShift));
+        new Thread(new Worker(honeyPerTick, (long) timeInterval, dayShift, nightShift)).start();
     }
 
     public java.lang.String getDescription() {
