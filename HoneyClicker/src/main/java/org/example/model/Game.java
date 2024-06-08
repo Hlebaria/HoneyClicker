@@ -25,18 +25,23 @@ public class Game {
 
     private Font captionFont, buttonFont, descriptionFont;
 
-    private static JLabel counterLabel;
+    private static JFrame window;
+    private static JLabel counterLabel, clockLabel;
     private JTextArea description;
     private JButton buttonBee, buttonHive, buttonFarm, buttonFactory, buttonBank;
 
     private ClickHandler clickHandler = new ClickHandler();
     private MouseHandler mouseHandler = new MouseHandler();
 
+    private static GlobalClock clock;
+
     private Game(){
 
         captionFont = new Font("Comic Sans MS", Font.BOLD, 32);
         buttonFont = new Font("Comic Sans MS", Font.PLAIN, 30);
         descriptionFont = new Font("Comic Sans MS", Font.ITALIC, 28);
+
+        clock = GlobalClock.getInstance();
 
         bees = new Bee();
         hives = new BeeHive();
@@ -55,10 +60,10 @@ public class Game {
 
     private void generateUI(){
 
-        JFrame window = new JFrame();
+        window = new JFrame();
         window.setSize(width, height);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.getContentPane().setBackground(Color.CYAN);
+        window.getContentPane().setBackground(Color.DARK_GRAY);
         window.setLayout(null);
 
         JPanel flowerPanel = new JPanel();
@@ -148,6 +153,18 @@ public class Game {
         description.setText("Click the flower to gain honey!");
         window.add(description);
 
+        JPanel clockPanel = new JPanel();
+        clockPanel.setBounds(100, 725, 200, 75);
+        clockPanel.setBackground(Color.orange);
+        clockPanel.setLayout(new GridLayout(1,1));
+        window.add(clockPanel);
+
+        clockLabel = new JLabel(String.format( clock.getHours() + " : 00"), SwingConstants.CENTER);
+        clockLabel.setForeground(Color.black);
+        clockLabel.setFont(captionFont);
+        clockLabel.setBorder(BorderFactory.createLineBorder(Color.black,4));
+        clockPanel.add(clockLabel);
+
 
         ImageIcon splatterIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/gameResources/honeySplatter.png")));
 
@@ -166,6 +183,18 @@ public class Game {
 
     }
 
+    public static void advanceTime(){
+
+        clockLabel.setText(String.format( clock.getHours() + " : 00"));
+
+        if(GlobalClock.daytime()) {
+            window.getContentPane().setBackground(Color.CYAN);
+        }
+        else{
+            window.getContentPane().setBackground(Color.DARK_GRAY);
+        }
+    }
+
     private class ClickHandler implements ActionListener {
 
         @Override
@@ -175,22 +204,27 @@ public class Game {
 
             switch (type) {
                 case "flower click":
-                    Game.increaseHoney(1);
+                    Game.increaseHoney(10);
                     break;
                 case "Bee":
-                    //create a Bee instance
+                    bees.buyItem(honeyCount);
+                    buttonBee.setText("Bee  " + bees.getCount() + "/" + bees.getCapacity());
                     break;
-                case "Hive":
-                    //create a beeHive instance
+                case "Beehive":
+                    hives.buyItem(honeyCount);
+                    buttonHive.setText("Beehive  " + hives.getCount() + "/" + hives.getCapacity());
                     break;
                 case "Farm":
-                    //create a Farm instance
+                    farms.buyItem(honeyCount);
+                    buttonFarm.setText("Farm  " + farms.getCount() + "/" + farms.getCapacity());
                     break;
                 case "Factory":
-                    //create a factory instance
+                    factories.buyItem(honeyCount);
+                    buttonFactory.setText("Factory  " + factories.getCount() + "/" + factories.getCapacity());
                     break;
                 case "Bank":
-                    //create a Bank Instance
+                    banks.buyItem(honeyCount);
+                    buttonBank.setText("Bank  " + banks.getCount() + "/" + banks.getCapacity());
                     break;
 
             }
