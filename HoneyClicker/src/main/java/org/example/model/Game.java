@@ -35,6 +35,8 @@ public class Game {
 
     private static GlobalClock clock;
 
+    private int honeyPerClick = 1;
+
     private Game(){
 
         captionFont = new Font("Comic Sans MS", Font.BOLD, 32);
@@ -204,7 +206,7 @@ public class Game {
 
             switch (type) {
                 case "flower click":
-                    Game.increaseHoney(10);
+                    Game.increaseHoney(honeyPerClick);
                     break;
                 case "Bee":
                     bees.buyItem(honeyCount);
